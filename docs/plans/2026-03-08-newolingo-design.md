@@ -123,15 +123,78 @@ erDiagram
     User ||--o{ Achievement : "1:N"
     User ||--o{ WordBank : "1:N"
 
-    Course { string id; string title; string description; int sortOrder }
-    Unit { string id; string courseId; string title; int sortOrder; string unlockCriteria }
-    Lesson { string id; string unitId; string title; string type; int sortOrder; int xpReward }
-    Exercise { string id; string lessonId; string type; string prompt; json choices; string correctAnswer; string audioUrl; string hint }
-    User { string id; string displayName; string email; int xpTotal; int level; string orthoPref; int dailyGoal }
-    Progress { string id; string userId; string lessonId; int score; bool completed; int attempts }
-    Streak { string id; string userId; int currentStreak; int longestStreak; date lastPractice; int freezesLeft }
-    Achievement { string id; string userId; string type; date earnedAt; string title }
-    WordBank { string id; string userId; string mikmaw; string english; float strength; string animacy; string verbClass }
+    Course {
+        string id
+        string title
+        string description
+        int sortOrder
+    }
+    Unit {
+        string id
+        string courseId
+        string title
+        int sortOrder
+        string unlockCriteria
+    }
+    Lesson {
+        string id
+        string unitId
+        string title
+        string type
+        int sortOrder
+        int xpReward
+    }
+    Exercise {
+        string id
+        string lessonId
+        string type
+        string prompt
+        json choices
+        string correctAnswer
+        string audioUrl
+        string hint
+    }
+    User {
+        string id
+        string displayName
+        string email
+        int xpTotal
+        int level
+        string orthoPref
+        int dailyGoal
+    }
+    Progress {
+        string id
+        string userId
+        string lessonId
+        int score
+        bool completed
+        int attempts
+    }
+    Streak {
+        string id
+        string userId
+        int currentStreak
+        int longestStreak
+        date lastPractice
+        int freezesLeft
+    }
+    Achievement {
+        string id
+        string userId
+        string type
+        date earnedAt
+        string title
+    }
+    WordBank {
+        string id
+        string userId
+        string mikmaw
+        string english
+        float strength
+        string animacy
+        string verbClass
+    }
 ```
 
 ---
