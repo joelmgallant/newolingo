@@ -203,6 +203,7 @@ Language learners are often in areas with limited connectivity (rural/reserve co
 Modeled on Duolingo's skill tree / path, adapted for Mi'kmaw:
 
 **Course 1: Foundations (A1 equivalent)**
+
 | Unit | Topic | Key Content |
 |------|-------|-------------|
 | 1 | Greetings & Introductions | Kwe' (hello), basic phrases, situating yourself |
@@ -217,6 +218,7 @@ Modeled on Duolingo's skill tree / path, adapted for Mi'kmaw:
 | 10 | Places & Directions | Location words, basic navigation |
 
 **Course 2: Building Blocks (A2 equivalent)**
+
 | Unit | Topic | Key Content |
 |------|-------|-------------|
 | 1 | Verb Basics | VAI/VII distinction, simple conjugation |
