@@ -98,100 +98,40 @@ Mi'kmaw is polysynthetic — single words can encode entire sentences. This requ
 
 Language learners are often in areas with limited connectivity (rural/reserve communities). The app must work fully offline:
 
-```
-┌─────────────────────────────────────────────┐
-│                   App Layer                  │
-│  ┌──────────┐ ┌───────────┐ ┌────────────┐  │
-│  │  Lessons  │ │  Progress │ │   Audio    │  │
-│  │  Screen   │ │  Tracker  │ │   Player   │  │
-│  └────┬─────┘ └─────┬─────┘ └─────┬──────┘  │
-│       │             │             │          │
-│  ┌────▼─────────────▼─────────────▼──────┐   │
-│  │         Zustand Store (Runtime)       │   │
-│  └────────────────┬──────────────────────┘   │
-│                   │                          │
-│  ┌────────────────▼──────────────────────┐   │
-│  │        SQLite (Persistent)            │   │
-│  │  - Lesson content (bundled)           │   │
-│  │  - User progress                      │   │
-│  │  - Cached audio references            │   │
-│  └────────────────┬──────────────────────┘   │
-│                   │ (sync when online)       │
-└───────────────────┼──────────────────────────┘
-                    │
-            ┌───────▼───────┐
-            │   Supabase    │
-            │  - Auth       │
-            │  - Progress   │
-            │    backup     │
-            │  - Content    │
-            │    updates    │
-            │  - Audio CDN  │
-            │  - Leaderboard│
-            └───────────────┘
+```mermaid
+graph TD
+    subgraph App["App Layer"]
+        UI["Lessons / Progress / Audio Player"]
+        ZS["Zustand Store (Runtime)"]
+        SQ["SQLite (Persistent)<br/>Lesson content · User progress · Cached audio"]
+        UI --> ZS --> SQ
+    end
+    SQ -- "sync when online" --> SB["Supabase<br/>Auth · Progress backup · Content updates · Audio CDN · Leaderboard"]
 ```
 
 **Content bundling:** Core lesson content (text, phonetic guides) ships with the app binary. Audio files are downloaded on-demand and cached locally. Content updates are pulled incrementally when online.
 
 ### 4.3 Data Model
 
-```
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│    Course     │     │    Unit       │     │   Lesson     │
-│──────────────│     │──────────────│     │──────────────│
-│ id           │────▶│ id           │────▶│ id           │
-│ title        │  1:N│ courseId      │  1:N│ unitId       │
-│ description  │     │ title        │     │ title        │
-│ level        │     │ description  │     │ type         │
-│ sortOrder    │     │ sortOrder    │     │ sortOrder    │
-│ icon         │     │ icon         │     │ xpReward     │
-└──────────────┘     │ unlockCriteria│    └──────┬───────┘
-                     └──────────────┘           │ 1:N
-                                         ┌──────▼───────┐
-                                         │  Exercise    │
-                                         │──────────────│
-                                         │ id           │
-                                         │ lessonId     │
-                                         │ type         │
-                                         │ prompt       │
-                                         │ choices      │
-                                         │ correctAnswer│
-                                         │ audioUrl     │
-                                         │ imageUrl     │
-                                         │ hint         │
-                                         │ grammarNote  │
-                                         │ culturalNote │
-                                         │ sortOrder    │
-                                         └──────────────┘
+```mermaid
+erDiagram
+    Course ||--o{ Unit : "1:N"
+    Unit ||--o{ Lesson : "1:N"
+    Lesson ||--o{ Exercise : "1:N"
+    User ||--o{ Progress : "1:N"
+    User ||--|| Streak : "1:1"
+    User ||--o{ Achievement : "1:N"
+    User ||--o{ WordBank : "1:N"
 
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│    User       │     │  Progress    │     │   Streak     │
-│──────────────│     │──────────────│     │──────────────│
-│ id           │────▶│ id           │     │ id           │
-│ displayName  │  1:N│ userId       │     │ userId       │
-│ email        │     │ lessonId     │     │ currentStreak│
-│ avatarUrl    │     │ score        │     │ longestStreak│
-│ xpTotal      │     │ completed    │     │ lastPractice │
-│ level        │     │ attempts     │     │ freezesLeft  │
-│ createdAt    │     │ bestScore    │     └──────────────┘
-│ orthoPref    │     │ completedAt  │
-│ dailyGoal    │     └──────────────┘     ┌──────────────┐
-│ soundEnabled │                          │  Achievement │
-└──────────────┘     ┌──────────────┐     │──────────────│
-                     │  WordBank    │     │ id           │
-                     │──────────────│     │ userId       │
-                     │ id           │     │ type         │
-                     │ userId       │     │ earnedAt     │
-                     │ mikmaw       │     │ title        │
-                     │ english      │     │ description  │
-                     │ audioUrl     │     └──────────────┘
-                     │ strength     │
-                     │ lastPracticed│
-                     │ nextReview   │  (spaced repetition)
-                     │ animacy      │  (animate/inanimate)
-                     │ verbClass    │  (VAI/VII/VTA/VTI)
-                     │ culturalNote │
-                     └──────────────┘
+    Course { string id; string title; string description; int sortOrder }
+    Unit { string id; string courseId; string title; int sortOrder; string unlockCriteria }
+    Lesson { string id; string unitId; string title; string type; int sortOrder; int xpReward }
+    Exercise { string id; string lessonId; string type; string prompt; json choices; string correctAnswer; string audioUrl; string hint }
+    User { string id; string displayName; string email; int xpTotal; int level; string orthoPref; int dailyGoal }
+    Progress { string id; string userId; string lessonId; int score; bool completed; int attempts }
+    Streak { string id; string userId; int currentStreak; int longestStreak; date lastPractice; int freezesLeft }
+    Achievement { string id; string userId; string type; date earnedAt; string title }
+    WordBank { string id; string userId; string mikmaw; string english; float strength; string animacy; string verbClass }
 ```
 
 ---
@@ -325,62 +265,27 @@ Language cannot be separated from culture. Every unit includes:
 
 ### 6.1 Navigation Structure
 
-```
-Tab Bar (Bottom)
-├── Home (Skill Tree)
-│   ├── Course selector
-│   ├── Unit nodes (locked/unlocked/completed)
-│   └── Lesson entry → Exercise flow
-├── Practice
-│   ├── Weak words review
-│   ├── Listening practice
-│   ├── Speaking practice
-│   └── Mistakes review
-├── Dictionary
-│   ├── Search (Mi'kmaw ↔ English)
-│   ├── Word detail (audio, examples, animacy, verb class)
-│   ├── Saved words
-│   └── Browse by category
-├── Leaderboard
-│   ├── Weekly league
-│   ├── Friends list
-│   └── Community boards
-└── Profile
-    ├── Stats (XP, streak, level, words learned)
-    ├── Achievements
-    ├── Settings
-    │   ├── Orthography preference (Francis-Smith / Listuguj)
-    │   ├── Daily goal
-    │   ├── Sound / haptics
-    │   ├── Notifications
-    │   └── Offline content management
-    └── Account
+```mermaid
+graph LR
+    Tab["Tab Bar"] --> Home["🏠 Home<br/>Course selector · Unit nodes · Lesson entry"]
+    Tab --> Practice["🔄 Practice<br/>Weak words · Listening · Speaking · Mistakes"]
+    Tab --> Dict["📖 Dictionary<br/>Search · Word detail · Saved words · Browse"]
+    Tab --> LB["🏆 Leaderboard<br/>Weekly league · Friends · Community"]
+    Tab --> Profile["👤 Profile<br/>Stats · Achievements · Settings · Account"]
 ```
 
 ### 6.2 Lesson Flow
 
-```
-Lesson Start
-  │
-  ├── Progress bar (top) — shows exercise count
-  ├── Hearts display (top-right)
-  │
-  ▼
-Exercise 1 of N
-  │
-  ├── [Correct] → success animation + XP → next exercise
-  ├── [Incorrect] → shake + correct answer shown + heart lost → next exercise
-  │
-  ▼
-  ... exercises 2-N ...
-  │
-  ▼
-Lesson Complete Screen
-  ├── XP earned (with animation)
-  ├── Accuracy percentage
-  ├── New words learned (added to WordBank)
-  ├── Streak update
-  └── [Continue] → back to skill tree (next lesson unlocked)
+```mermaid
+graph LR
+    Start["Lesson Start<br/>Progress bar · Hearts"] --> Ex["Exercise 1…N"]
+    Ex -- "Correct" --> OK["✅ +XP · Animation"]
+    Ex -- "Incorrect" --> Fail["❌ Show answer · −1 ❤️"]
+    OK --> Next{More?}
+    Fail --> Next
+    Next -- "Yes" --> Ex
+    Next -- "No" --> Done["Lesson Complete<br/>XP · Accuracy · New words · Streak"]
+    Done --> Tree["Back to Skill Tree"]
 ```
 
 ### 6.3 Key Screens
@@ -397,20 +302,9 @@ Lesson Complete Screen
 
 ### 7.1 Audio Pipeline
 
-```
-Recording (Native speakers)
-  │
-  ▼
-Processing (normalize levels, trim silence, format to AAC)
-  │
-  ▼
-Storage (Supabase Storage / CDN)
-  │
-  ▼
-App (download on-demand, cache in SQLite blob or local filesystem)
-  │
-  ▼
-Playback (expo-av, with speed controls: 0.5x, 1x)
+```mermaid
+graph LR
+    Rec["🎙️ Recording<br/>Native speakers"] --> Proc["⚙️ Processing<br/>Normalize · Trim · AAC"] --> Store["☁️ Supabase CDN"] --> App["📱 App<br/>On-demand download · Local cache"] --> Play["🔊 Playback<br/>expo-av · 0.5x/1x"]
 ```
 
 ### 7.2 Audio Requirements
@@ -436,26 +330,9 @@ Since speech-to-text doesn't support Mi'kmaw:
 
 ### 8.1 Content Creation Workflow
 
-```
-Curriculum Designer (linguistic expertise)
-  │
-  ▼
-Draft lesson content (vocab, sentences, exercises, grammar notes)
-  │
-  ▼
-Community Review (elders, speakers validate language + cultural accuracy)
-  │
-  ▼
-Audio Recording (native speakers record vocab + sentences)
-  │
-  ▼
-Content Entry (admin panel → Supabase)
-  │
-  ▼
-QA Testing (exercise flow, audio playback, edge cases)
-  │
-  ▼
-Publish (push to app via content sync)
+```mermaid
+graph LR
+    CD["📝 Curriculum Designer"] --> Draft["Draft Content"] --> Review["👥 Community Review<br/>Elders · Speakers"] --> Audio["🎙️ Audio Recording"] --> Entry["💾 Content Entry<br/>Admin → Supabase"] --> QA["🧪 QA Testing"] --> Pub["🚀 Publish"]
 ```
 
 ### 8.2 Content Format (JSON)
