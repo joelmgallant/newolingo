@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Newolingo — Design Document</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Newolingo — Design Document</h1>
+</header>
+<h1
+id="newolingo-mikmaw-language-learning-app-design-document">Newolingo:
+Mi’kmaw Language Learning App — Design Document</h1>
+<p><strong>Date:</strong> 2026-03-08 <strong>Status:</strong> Draft —
+Awaiting Review</p>
+<hr />
+<h2 id="vision-purpose">1. Vision &amp; Purpose</h2>
+<p>Newolingo is a mobile-first, gamified language learning app for
+Mi’kmaw (Mi’kmaq), modeled on Duolingo’s proven learning mechanics. The
+app targets learners at all levels — from complete beginners to
+intermediate speakers seeking fluency — and serves the urgent need for
+Mi’kmaw language revitalization.</p>
+<p><strong>Why this matters:</strong> UNESCO classifies Mi’kmaw as
+“vulnerable.” The percentage of children aged 0-4 learning Mi’kmaw
+dropped from 44% (1999) to 20% (2013). Without intervention,
+intergenerational transmission will collapse. Digital tools that make
+learning accessible, fun, and self-paced are a critical supplement to
+community immersion programs.</p>
+<p><strong>Name:</strong> “Newolingo” — a portmanteau referencing the
+Mi’kmaw language in a playful, recognizable format.</p>
+<hr />
+<h2 id="target-users">2. Target Users</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 37%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Description</th>
+<th>Primary Goal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Heritage Learner</strong></td>
+<td>Mi’kmaw community member (teen/adult) wanting to reconnect with
+their language</td>
+<td>Conversational fluency, cultural connection</td>
+</tr>
+<tr>
+<td><strong>Student</strong></td>
+<td>University/school student taking Mi’kmaw courses</td>
+<td>Supplement classroom learning, vocab drilling</td>
+</tr>
+<tr>
+<td><strong>Curious Beginner</strong></td>
+<td>Non-Indigenous person interested in learning</td>
+<td>Basic phrases, cultural awareness</td>
+</tr>
+<tr>
+<td><strong>Parent/Educator</strong></td>
+<td>Parent or teacher wanting to learn alongside children</td>
+<td>Model language use, support children’s learning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Primary platform:</strong> iOS and Android via React Native
+<strong>Secondary platform:</strong> Web (future consideration, not
+MVP)</p>
+<hr />
+<h2 id="linguistic-design-decisions">3. Linguistic Design Decisions</h2>
+<h3 id="orthography">3.1 Orthography</h3>
+<p><strong>Primary:</strong> Francis-Smith orthography — the standard
+used in Nova Scotia education, the most widely adopted, and supported by
+Mi’kmaw Kina’matnewey.</p>
+<ul>
+<li>Short vowels: a, e, i, o, u</li>
+<li>Long vowels: marked with apostrophe (a’, e’, i’, o’, u’) — displayed
+with acute accent as fallback (á, é, í, ó, ú)</li>
+<li>Schwa: barred-i (ɨ, U+0268)</li>
+<li>Consonants: j, k, l, m, n, p, q, s, t, w + digraphs kw, qw, tl</li>
+</ul>
+<p><strong>Secondary (toggle):</strong> Listuguj orthography support —
+users can switch between Mi’kmaw (Francis-Smith) and Mi’gmaq (Listuguj)
+display. This is a settings toggle that maps between the two systems
+(primarily k↔︎g substitution and schwa representation).</p>
+<p><strong>Special character handling:</strong> - Custom keyboard
+overlay for Mi’kmaw-specific characters (ɨ, Ɨ, apostrophe for vowel
+length) - Prevent autocorrect from converting straight apostrophes to
+curly quotes - All text stored in Unicode with consistent apostrophe
+normalization</p>
+<h3 id="audio">3.2 Audio</h3>
+<p>Audio is non-negotiable for a polysynthetic language where
+pronunciation patterns are complex. Every vocabulary item and sentence
+must have audio.</p>
+<p><strong>Audio sourcing strategy:</strong> - <strong>Ideal:</strong>
+Recorded audio from native Mi’kmaw speakers (multiple speakers per item
+to expose learners to natural variation) - <strong>Realistic
+MVP:</strong> Integrate with existing audio from Mi’gmaq Online Talking
+Dictionary (mikmaqonline.org) where licensing permits, supplemented by
+commissioned recordings - <strong>Fallback:</strong> TTS as absolute
+last resort for gap-filling only, clearly marked as synthetic</p>
+<h3 id="dialect-handling">3.3 Dialect Handling</h3>
+<p>The app defaults to the Nova Scotia Mi’kmaw dialect (Francis-Smith)
+but acknowledges dialect variation: - Vocabulary items flag known
+dialect differences (e.g., animacy of “bus” varies by community) -
+Cultural notes explain regional variation without prescribing “correct”
+forms - Future: community-contributed dialect packs</p>
+<h3 id="grammar-scaffolding">3.4 Grammar Scaffolding</h3>
+<p>Mi’kmaw is polysynthetic — single words can encode entire sentences.
+This requires a fundamentally different teaching approach than Duolingo
+uses for European languages:</p>
+<ul>
+<li><strong>Start with whole phrases</strong>, not isolated words —
+learners hear and repeat “nmis” (my older sister) before learning the
+morpheme breakdown</li>
+<li><strong>Introduce animacy early</strong> — it’s a core concept that
+affects verb selection (VAI/VII/VTA/VTI)</li>
+<li><strong>Verb morphology is taught incrementally</strong> — start
+with fixed verb forms, then introduce conjugation patterns one at a
+time</li>
+<li><strong>Word order is taught as flexible</strong> — emphasize that
+Mi’kmaw encodes meaning in morphology, not position</li>
+</ul>
+<hr />
+<h2 id="app-architecture">4. App Architecture</h2>
+<h3 id="tech-stack">4.1 Tech Stack</h3>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 37%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mobile Framework</strong></td>
+<td>React Native (Expo)</td>
+<td>Cross-platform, large ecosystem, rapid development</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td>TypeScript</td>
+<td>Type safety, better DX</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td>Expo Router (file-based)</td>
+<td>Convention over config, deep linking</td>
+</tr>
+<tr>
+<td><strong>State Management</strong></td>
+<td>Zustand</td>
+<td>Lightweight, simple, good for offline-first</td>
+</tr>
+<tr>
+<td><strong>Local Storage</strong></td>
+<td>SQLite (expo-sqlite)</td>
+<td>Offline-first lesson content + progress</td>
+</tr>
+<tr>
+<td><strong>Audio</strong></td>
+<td>expo-av</td>
+<td>Audio playback for pronunciation</td>
+</tr>
+<tr>
+<td><strong>Animations</strong></td>
+<td>React Native Reanimated + Moti</td>
+<td>Smooth gamification animations</td>
+</tr>
+<tr>
+<td><strong>Backend</strong></td>
+<td>Supabase</td>
+<td>Auth, PostgreSQL, real-time, storage — minimal backend work</td>
+</tr>
+<tr>
+<td><strong>Content CMS</strong></td>
+<td>Custom admin panel or Supabase Studio</td>
+<td>Lesson content management</td>
+</tr>
+<tr>
+<td><strong>Analytics</strong></td>
+<td>PostHog (React Native SDK)</td>
+<td>Privacy-respecting, self-hostable</td>
+</tr>
+<tr>
+<td><strong>Testing</strong></td>
+<td>Jest + React Native Testing Library</td>
+<td>Unit &amp; integration tests</td>
+</tr>
+<tr>
+<td><strong>E2E Testing</strong></td>
+<td>Maestro</td>
+<td>Mobile-native E2E testing</td>
+</tr>
+<tr>
+<td><strong>CI/CD</strong></td>
+<td>EAS Build + EAS Submit</td>
+<td>Expo’s managed build/submit pipeline</td>
+</tr>
+</tbody>
+</table>
+<h3 id="offline-first-architecture">4.2 Offline-First Architecture</h3>
+<p>Language learners are often in areas with limited connectivity
+(rural/reserve communities). The app must work fully offline:</p>
+<pre><code>┌─────────────────────────────────────────────┐
+│                   App Layer                  │
+│  ┌──────────┐ ┌───────────┐ ┌────────────┐  │
+│  │  Lessons  │ │  Progress │ │   Audio    │  │
+│  │  Screen   │ │  Tracker  │ │   Player   │  │
+│  └────┬─────┘ └─────┬─────┘ └─────┬──────┘  │
+│       │             │             │          │
+│  ┌────▼─────────────▼─────────────▼──────┐   │
+│  │         Zustand Store (Runtime)       │   │
+│  └────────────────┬──────────────────────┘   │
+│                   │                          │
+│  ┌────────────────▼──────────────────────┐   │
+│  │        SQLite (Persistent)            │   │
+│  │  - Lesson content (bundled)           │   │
+│  │  - User progress                      │   │
+│  │  - Cached audio references            │   │
+│  └────────────────┬──────────────────────┘   │
+│                   │ (sync when online)       │
+└───────────────────┼──────────────────────────┘
+                    │
+            ┌───────▼───────┐
+            │   Supabase    │
+            │  - Auth       │
+            │  - Progress   │
+            │    backup     │
+            │  - Content    │
+            │    updates    │
+            │  - Audio CDN  │
+            │  - Leaderboard│
+            └───────────────┘</code></pre>
+<p><strong>Content bundling:</strong> Core lesson content (text,
+phonetic guides) ships with the app binary. Audio files are downloaded
+on-demand and cached locally. Content updates are pulled incrementally
+when online.</p>
+<h3 id="data-model">4.3 Data Model</h3>
+<pre><code>┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│    Course     │     │    Unit       │     │   Lesson     │
+│──────────────│     │──────────────│     │──────────────│
+│ id           │────▶│ id           │────▶│ id           │
+│ title        │  1:N│ courseId      │  1:N│ unitId       │
+│ description  │     │ title        │     │ title        │
+│ level        │     │ description  │     │ type         │
+│ sortOrder    │     │ sortOrder    │     │ sortOrder    │
+│ icon         │     │ icon         │     │ xpReward     │
+└──────────────┘     │ unlockCriteria│    └──────┬───────┘
+                     └──────────────┘           │ 1:N
+                                         ┌──────▼───────┐
+                                         │  Exercise    │
+                                         │──────────────│
+                                         │ id           │
+                                         │ lessonId     │
+                                         │ type         │
+                                         │ prompt       │
+                                         │ choices      │
+                                         │ correctAnswer│
+                                         │ audioUrl     │
+                                         │ imageUrl     │
+                                         │ hint         │
+                                         │ grammarNote  │
+                                         │ culturalNote │
+                                         │ sortOrder    │
+                                         └──────────────┘
+
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│    User       │     │  Progress    │     │   Streak     │
+│──────────────│     │──────────────│     │──────────────│
+│ id           │────▶│ id           │     │ id           │
+│ displayName  │  1:N│ userId       │     │ userId       │
+│ email        │     │ lessonId     │     │ currentStreak│
+│ avatarUrl    │     │ score        │     │ longestStreak│
+│ xpTotal      │     │ completed    │     │ lastPractice │
+│ level        │     │ attempts     │     │ freezesLeft  │
+│ createdAt    │     │ bestScore    │     └──────────────┘
+│ orthoPref    │     │ completedAt  │
+│ dailyGoal    │     └──────────────┘     ┌──────────────┐
+│ soundEnabled │                          │  Achievement │
+└──────────────┘     ┌──────────────┐     │──────────────│
+                     │  WordBank    │     │ id           │
+                     │──────────────│     │ userId       │
+                     │ id           │     │ type         │
+                     │ userId       │     │ earnedAt     │
+                     │ mikmaw       │     │ title        │
+                     │ english      │     │ description  │
+                     │ audioUrl     │     └──────────────┘
+                     │ strength     │
+                     │ lastPracticed│
+                     │ nextReview   │  (spaced repetition)
+                     │ animacy      │  (animate/inanimate)
+                     │ verbClass    │  (VAI/VII/VTA/VTI)
+                     │ culturalNote │
+                     └──────────────┘</code></pre>
+<hr />
+<h2 id="feature-design">5. Feature Design</h2>
+<h3 id="course-structure-skill-tree">5.1 Course Structure (Skill
+Tree)</h3>
+<p>Modeled on Duolingo’s skill tree / path, adapted for Mi’kmaw:</p>
+<p><strong>Course 1: Foundations (A1 equivalent)</strong> | Unit | Topic
+| Key Content | |——|——-|————-| | 1 | Greetings &amp; Introductions |
+Kwe’ (hello), basic phrases, situating yourself | | 2 | Family &amp;
+Relationships | Kinship terms (critical in Mi’kmaw culture) | | 3 |
+Numbers &amp; Counting | Cardinal numbers 1-20, basic counting | | 4 |
+Animals &amp; Nature | Common animals, animacy introduction | | 5 | Food
+&amp; Drink | Basic food vocabulary, meal phrases | | 6 | Body &amp;
+Health | Body parts, basic health phrases | | 7 | Colors &amp;
+Descriptions | Adjective patterns, descriptive verbs | | 8 | Weather
+&amp; Seasons | 7 Mi’kmaw seasons, weather expressions | | 9 | Daily
+Routines | VAI verb introduction, time expressions | | 10 | Places &amp;
+Directions | Location words, basic navigation |</p>
+<p><strong>Course 2: Building Blocks (A2 equivalent)</strong> | Unit |
+Topic | Key Content | |——|——-|————-| | 1 | Verb Basics | VAI/VII
+distinction, simple conjugation | | 2 | Animate vs. Inanimate | Animacy
+system deep dive, noun classes | | 3 | Transitive Verbs | VTA/VTI
+introduction | | 4 | Questions &amp; Answers | Question formation,
+conversational patterns | | 5 | Past &amp; Future | Temporal aspect
+markers | | 6 | Home &amp; Community | Domestic vocabulary, community
+life | | 7 | Land &amp; Water | Environmental vocabulary (culturally
+significant) | | 8 | Stories &amp; Legends | Narrative forms,
+storytelling conventions | | 9 | Emotions &amp; Opinions | Expressing
+feelings, polysynthetic expression | | 10 | Review &amp; Consolidation |
+Comprehensive review, conversation practice |</p>
+<p><strong>Course 3: Conversational Mi’kmaw (B1 equivalent)</strong> —
+future expansion.</p>
+<h3 id="exercise-types">5.2 Exercise Types</h3>
+<p>Each lesson contains 10-15 exercises, mixing these types:</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 28%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Exercise Type</th>
+<th>Description</th>
+<th>Mi’kmaw Adaptation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Translation (L2→L1)</strong></td>
+<td>Translate Mi’kmaw to English</td>
+<td>Whole-phrase translation, not word-by-word</td>
+</tr>
+<tr>
+<td><strong>Translation (L1→L2)</strong></td>
+<td>Translate English to Mi’kmaw</td>
+<td>Word bank with morpheme tiles for complex words</td>
+</tr>
+<tr>
+<td><strong>Listening</strong></td>
+<td>Hear audio, select/type what was said</td>
+<td>Critical for pronunciation patterns</td>
+</tr>
+<tr>
+<td><strong>Speaking</strong></td>
+<td>Record pronunciation, compare to native audio</td>
+<td>Waveform comparison (not speech-to-text, which doesn’t support
+Mi’kmaw)</td>
+</tr>
+<tr>
+<td><strong>Matching</strong></td>
+<td>Match Mi’kmaw words to English/images</td>
+<td>Pair audio + text for reinforcement</td>
+</tr>
+<tr>
+<td><strong>Fill in the Blank</strong></td>
+<td>Complete a sentence with correct morpheme/word</td>
+<td>Teaches morphological patterns</td>
+</tr>
+<tr>
+<td><strong>Image Selection</strong></td>
+<td>See Mi’kmaw word/phrase, select correct image</td>
+<td>Visual vocabulary building</td>
+</tr>
+<tr>
+<td><strong>Animacy Sort</strong></td>
+<td>Sort nouns into animate/inanimate categories</td>
+<td>Unique to Mi’kmaw — teaches core concept</td>
+</tr>
+<tr>
+<td><strong>Verb Class ID</strong></td>
+<td>Identify verb class (VAI/VII/VTA/VTI) from context</td>
+<td>Introduced in Course 2+</td>
+</tr>
+<tr>
+<td><strong>Word Building</strong></td>
+<td>Assemble morphemes to build polysynthetic words</td>
+<td>Drag-and-drop morpheme tiles</td>
+</tr>
+<tr>
+<td><strong>Cultural Context</strong></td>
+<td>Short cultural note with comprehension question</td>
+<td>Integrates culture with language</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gamification-system">5.3 Gamification System</h3>
+<p>Duolingo’s gamification mechanics, adapted:</p>
+<p><strong>XP (Experience Points)</strong> - Earn XP for completing
+exercises (10 XP per correct answer) - Bonus XP for perfect lessons (no
+mistakes): +20 XP - Bonus XP for speed completion: +10 XP - Daily XP
+goals: 10 (casual), 20 (regular), 30 (serious), 50 (intense)</p>
+<p><strong>Streaks</strong> - Daily streak counter for consecutive days
+of practice - Streak freeze: earned through XP milestones or in-app
+currency - Streak repair: one-time use after missing a day - Weekend
+amulet: protects streak over weekends (earned)</p>
+<p><strong>Hearts / Health System</strong> - 5 hearts per session - Lose
+1 heart per wrong answer - Hearts regenerate over time (1 per hour) or
+via practice sessions - Optional: “no hearts” mode for committed
+learners (premium or earned)</p>
+<p><strong>Leaderboards</strong> - Weekly leagues (Bronze → Silver →
+Gold → Sapphire → Ruby → Emerald → Diamond) - Compete with cohort of ~30
+users - Top 10 advance, bottom 5 drop - Optional: community-specific
+leaderboards (by First Nation community)</p>
+<p><strong>Achievements / Badges</strong> - Milestone badges: first
+lesson, first unit, first course - Streak badges: 7-day, 30-day,
+100-day, 365-day - Skill badges: master specific topics - Cultural
+badges: complete cultural context exercises - Social badges: invite
+friends, help others</p>
+<p><strong>In-App Currency (“Wampum” — working name, to be validated
+with community)</strong> - Earned through lessons, streaks, achievements
+- Spend on: streak freezes, heart refills, bonus lessons, avatar
+customization - No real-money purchases for MVP (avoid pay-to-win
+dynamics in a revitalization context)</p>
+<h3 id="spaced-repetition-system-srs">5.4 Spaced Repetition System
+(SRS)</h3>
+<p>Built-in SRS for vocabulary retention, based on SM-2 algorithm:</p>
+<ul>
+<li>Each word in the user’s WordBank has a “strength” score (0.0 →
+1.0)</li>
+<li>Words decay over time based on difficulty and review history</li>
+<li>“Practice” mode surfaces weak words for review</li>
+<li>Visual indicator on skill tree shows which skills need review
+(strength bar / crack animation)</li>
+<li>Push notifications remind users to review decaying words</li>
+</ul>
+<h3 id="cultural-integration">5.5 Cultural Integration</h3>
+<p>Language cannot be separated from culture. Every unit includes:</p>
+<ul>
+<li><strong>Cultural Context Cards:</strong> Brief, respectful
+explanations of cultural significance (e.g., why kinship terms are
+taught early, the importance of the 7 seasons)</li>
+<li><strong>Story Mode:</strong> Short traditional stories (with
+community permission) told in Mi’kmaw with guided comprehension</li>
+<li><strong>Community Attribution:</strong> Every audio recording,
+story, and cultural note credits the speaker, elder, or community that
+contributed it</li>
+<li><strong>Land Acknowledgment:</strong> App onboarding includes
+acknowledgment of Mi’kma’ki (traditional territory)</li>
+</ul>
+<h3 id="mikmaw-specific-input">5.6 Mi’kmaw-Specific Input</h3>
+<p><strong>Custom Keyboard Overlay:</strong> - Appears above the
+standard keyboard during Mi’kmaw text input - Quick-access buttons for:
+ɨ, Ɨ, a’, e’, i’, o’, u’ (or á, é, í, ó, ú) - Autocorrect disabled for
+Mi’kmaw input fields - Smart apostrophe handling: always inserts
+straight apostrophe (U+0027) in Mi’kmaw context</p>
+<hr />
+<h2 id="screen-flow-navigation">6. Screen Flow &amp; Navigation</h2>
+<h3 id="navigation-structure">6.1 Navigation Structure</h3>
+<pre><code>Tab Bar (Bottom)
+├── Home (Skill Tree)
+│   ├── Course selector
+│   ├── Unit nodes (locked/unlocked/completed)
+│   └── Lesson entry → Exercise flow
+├── Practice
+│   ├── Weak words review
+│   ├── Listening practice
+│   ├── Speaking practice
+│   └── Mistakes review
+├── Dictionary
+│   ├── Search (Mi&#39;kmaw ↔ English)
+│   ├── Word detail (audio, examples, animacy, verb class)
+│   ├── Saved words
+│   └── Browse by category
+├── Leaderboard
+│   ├── Weekly league
+│   ├── Friends list
+│   └── Community boards
+└── Profile
+    ├── Stats (XP, streak, level, words learned)
+    ├── Achievements
+    ├── Settings
+    │   ├── Orthography preference (Francis-Smith / Listuguj)
+    │   ├── Daily goal
+    │   ├── Sound / haptics
+    │   ├── Notifications
+    │   └── Offline content management
+    └── Account</code></pre>
+<h3 id="lesson-flow">6.2 Lesson Flow</h3>
+<pre><code>Lesson Start
+  │
+  ├── Progress bar (top) — shows exercise count
+  ├── Hearts display (top-right)
+  │
+  ▼
+Exercise 1 of N
+  │
+  ├── [Correct] → success animation + XP → next exercise
+  ├── [Incorrect] → shake + correct answer shown + heart lost → next exercise
+  │
+  ▼
+  ... exercises 2-N ...
+  │
+  ▼
+Lesson Complete Screen
+  ├── XP earned (with animation)
+  ├── Accuracy percentage
+  ├── New words learned (added to WordBank)
+  ├── Streak update
+  └── [Continue] → back to skill tree (next lesson unlocked)</code></pre>
+<h3 id="key-screens">6.3 Key Screens</h3>
+<ol type="1">
+<li><strong>Onboarding:</strong> Language selection is just Mi’kmaw
+(single-language app). Brief intro to Mi’kma’ki, orthography choice,
+daily goal selection, optional account creation.</li>
+<li><strong>Skill Tree:</strong> Vertical scrolling path with unit
+nodes. Each node shows completion state, strength indicator.
+Duolingo-style winding path.</li>
+<li><strong>Exercise Screen:</strong> Clean, focused. Large text,
+prominent audio button, clear answer options. Minimal chrome to reduce
+distraction.</li>
+<li><strong>Dictionary:</strong> Searchable word bank. Each entry shows
+Mi’kmaw text, English translation, audio player, animacy tag, example
+sentences, cultural notes.</li>
+<li><strong>Profile/Stats:</strong> Gamification dashboard. Streak
+calendar, XP graph, level progress, achievement gallery.</li>
+</ol>
+<hr />
+<h2 id="audio-architecture">7. Audio Architecture</h2>
+<h3 id="audio-pipeline">7.1 Audio Pipeline</h3>
+<pre><code>Recording (Native speakers)
+  │
+  ▼
+Processing (normalize levels, trim silence, format to AAC)
+  │
+  ▼
+Storage (Supabase Storage / CDN)
+  │
+  ▼
+App (download on-demand, cache in SQLite blob or local filesystem)
+  │
+  ▼
+Playback (expo-av, with speed controls: 0.5x, 1x)</code></pre>
+<h3 id="audio-requirements">7.2 Audio Requirements</h3>
+<ul>
+<li><strong>Format:</strong> AAC (.m4a), 44.1kHz, mono, ~64kbps (small
+files for offline caching)</li>
+<li><strong>Per vocabulary item:</strong> At least 1 speaker recording,
+ideally 2-3 for variation</li>
+<li><strong>Per sentence/phrase:</strong> 1 recording at natural speed,
+1 at slow speed</li>
+<li><strong>Total estimated audio:</strong> ~5,000-8,000 clips for MVP
+(Courses 1-2)</li>
+<li><strong>Storage estimate:</strong> ~200-400 MB total, ~50 MB bundled
+with app, rest downloaded</li>
+</ul>
+<h3 id="speaking-exercises">7.3 Speaking Exercises</h3>
+<p>Since speech-to-text doesn’t support Mi’kmaw: - User records their
+pronunciation - Side-by-side waveform comparison with native speaker -
+Playback both recordings for self-assessment - No automated scoring —
+user self-evaluates (honest approach for an unsupported language) -
+Future: train a custom pronunciation model with community
+partnership</p>
+<hr />
+<h2 id="content-pipeline">8. Content Pipeline</h2>
+<h3 id="content-creation-workflow">8.1 Content Creation Workflow</h3>
+<pre><code>Curriculum Designer (linguistic expertise)
+  │
+  ▼
+Draft lesson content (vocab, sentences, exercises, grammar notes)
+  │
+  ▼
+Community Review (elders, speakers validate language + cultural accuracy)
+  │
+  ▼
+Audio Recording (native speakers record vocab + sentences)
+  │
+  ▼
+Content Entry (admin panel → Supabase)
+  │
+  ▼
+QA Testing (exercise flow, audio playback, edge cases)
+  │
+  ▼
+Publish (push to app via content sync)</code></pre>
+<h3 id="content-format-json">8.2 Content Format (JSON)</h3>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;lesson&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;foundations-greetings-1&quot;</span><span class="fu">,</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;unitId&quot;</span><span class="fu">:</span> <span class="st">&quot;foundations-greetings&quot;</span><span class="fu">,</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;Greetings 1&quot;</span><span class="fu">,</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;exercises&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;listening&quot;</span><span class="fu">,</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;prompt&quot;</span><span class="fu">:</span> <span class="st">&quot;What do you hear?&quot;</span><span class="fu">,</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;audioUrl&quot;</span><span class="fu">:</span> <span class="st">&quot;audio/kwe.m4a&quot;</span><span class="fu">,</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;choices&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;Kwe&#39;&quot;</span><span class="ot">,</span> <span class="st">&quot;Kesalk&quot;</span><span class="ot">,</span> <span class="st">&quot;Wela&#39;lin&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;correctAnswer&quot;</span><span class="fu">:</span> <span class="st">&quot;Kwe&#39;&quot;</span><span class="fu">,</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;hint&quot;</span><span class="fu">:</span> <span class="st">&quot;This is the most common greeting&quot;</span><span class="fu">,</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;culturalNote&quot;</span><span class="fu">:</span> <span class="st">&quot;Kwe&#39; is used as a general greeting, similar to &#39;hello&#39; in English.&quot;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;translation_l2_l1&quot;</span><span class="fu">,</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;prompt&quot;</span><span class="fu">:</span> <span class="st">&quot;Translate: Kwe&#39;, Me&#39; tal-a-sey?&quot;</span><span class="fu">,</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;audioUrl&quot;</span><span class="fu">:</span> <span class="st">&quot;audio/kwe_me_tal_a_sey.m4a&quot;</span><span class="fu">,</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;choices&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Hello, how are you?&quot;</span><span class="ot">,</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;Goodbye, see you later&quot;</span><span class="ot">,</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;My name is...&quot;</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;correctAnswer&quot;</span><span class="fu">:</span> <span class="st">&quot;Hello, how are you?&quot;</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;animacy_sort&quot;</span><span class="fu">,</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;prompt&quot;</span><span class="fu">:</span> <span class="st">&quot;Sort these nouns by animacy&quot;</span><span class="fu">,</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>          <span class="fu">{</span> <span class="dt">&quot;word&quot;</span><span class="fu">:</span> <span class="st">&quot;lentug&quot;</span><span class="fu">,</span> <span class="dt">&quot;english&quot;</span><span class="fu">:</span> <span class="st">&quot;deer&quot;</span><span class="fu">,</span> <span class="dt">&quot;animacy&quot;</span><span class="fu">:</span> <span class="st">&quot;animate&quot;</span> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>          <span class="fu">{</span> <span class="dt">&quot;word&quot;</span><span class="fu">:</span> <span class="st">&quot;wi&#39;kuom&quot;</span><span class="fu">,</span> <span class="dt">&quot;english&quot;</span><span class="fu">:</span> <span class="st">&quot;house&quot;</span><span class="fu">,</span> <span class="dt">&quot;animacy&quot;</span><span class="fu">:</span> <span class="st">&quot;inanimate&quot;</span> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>          <span class="fu">{</span> <span class="dt">&quot;word&quot;</span><span class="fu">:</span> <span class="st">&quot;ji&#39;nm&quot;</span><span class="fu">,</span> <span class="dt">&quot;english&quot;</span><span class="fu">:</span> <span class="st">&quot;man&quot;</span><span class="fu">,</span> <span class="dt">&quot;animacy&quot;</span><span class="fu">:</span> <span class="st">&quot;animate&quot;</span> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>          <span class="fu">{</span> <span class="dt">&quot;word&quot;</span><span class="fu">:</span> <span class="st">&quot;kuow&quot;</span><span class="fu">,</span> <span class="dt">&quot;english&quot;</span><span class="fu">:</span> <span class="st">&quot;bus&quot;</span><span class="fu">,</span> <span class="dt">&quot;animacy&quot;</span><span class="fu">:</span> <span class="st">&quot;animate&quot;</span><span class="fu">,</span> <span class="dt">&quot;note&quot;</span><span class="fu">:</span> <span class="st">&quot;Animacy may vary by community&quot;</span> <span class="fu">}</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>        <span class="ot">]</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<hr />
+<h2 id="accessibility-inclusivity">9. Accessibility &amp;
+Inclusivity</h2>
+<ul>
+<li><strong>Font sizing:</strong> Dynamic type support, minimum 16pt for
+Mi’kmaw text</li>
+<li><strong>Color contrast:</strong> WCAG AA minimum, dark mode
+support</li>
+<li><strong>Screen reader:</strong> VoiceOver/TalkBack compatible, with
+audio descriptions for images</li>
+<li><strong>Reduced motion:</strong> Respect system setting, provide
+static alternatives to animations</li>
+<li><strong>Age range:</strong> Content appropriate for ages 10+
+(younger learners would use a separate kids mode in future)</li>
+<li><strong>Monetization:</strong> Free. No paywalls. No ads. Language
+revitalization should not be gatekept by money. Funding model is
+grants/donations, not user payment.</li>
+</ul>
+<hr />
+<h2 id="privacy-data">10. Privacy &amp; Data</h2>
+<ul>
+<li><strong>Minimal data collection:</strong> Only what’s needed for
+account sync and progress tracking</li>
+<li><strong>No selling data:</strong> Ever. This is a revitalization
+tool, not an ad platform.</li>
+<li><strong>Audio recordings:</strong> User speaking exercise recordings
+stay on-device, never uploaded</li>
+<li><strong>COPPA compliance:</strong> If under-13 features are added,
+implement parental consent</li>
+<li><strong>Data sovereignty:</strong> User data stored in Canadian data
+centers (Supabase supports region selection)</li>
+<li><strong>Export/delete:</strong> Users can export or delete all their
+data at any time</li>
+</ul>
+<hr />
+<h2 id="community-attribution">11. Community &amp; Attribution</h2>
+<h3 id="principles">11.1 Principles</h3>
+<ul>
+<li><strong>Community ownership:</strong> The app is a tool for the
+community. Content decisions should be guided by Mi’kmaw educators and
+elders.</li>
+<li><strong>Attribution always:</strong> Every recording, story, and
+cultural note credits its source.</li>
+<li><strong>Open content consideration:</strong> Language data
+(vocabulary, grammar rules) could be open-sourced to benefit other
+revitalization efforts, with community consent.</li>
+<li><strong>Feedback loop:</strong> In-app mechanism for speakers to
+flag errors or suggest improvements.</li>
+</ul>
+<h3 id="community-engagement-pre-development">11.2 Community Engagement
+(Pre-Development)</h3>
+<p>Before building, the following partnerships should be established: -
+<strong>Mi’kmaw Kina’matnewey</strong> — primary education authority,
+potential co-developer - <strong>Mi’gmaq Online / Talking Dictionary
+team</strong> — audio licensing, vocabulary alignment -
+<strong>FirstVoices</strong> — potential data sharing, keyboard
+integration - <strong>Elder advisory council</strong> — cultural review
+board for all content - <strong>University partners</strong> (Dalhousie,
+UPEI, CBU) — linguistic review, curriculum design</p>
+<hr />
+<h2 id="technical-risks-mitigations">12. Technical Risks &amp;
+Mitigations</h2>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 32%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Audio sourcing bottleneck</td>
+<td>High — app is unusable without audio</td>
+<td>Start with high-frequency vocabulary, partner with existing audio
+projects</td>
+</tr>
+<tr>
+<td>Autocorrect/apostrophe corruption</td>
+<td>Medium — breaks text display and search</td>
+<td>Normalize all text on input, disable autocorrect in Mi’kmaw
+fields</td>
+</tr>
+<tr>
+<td>Barred-i (ɨ) rendering</td>
+<td>Low — some fonts don’t support it</td>
+<td>Bundle a font that includes IPA Extensions block</td>
+</tr>
+<tr>
+<td>No speech-to-text for Mi’kmaw</td>
+<td>Medium — limits speaking exercises</td>
+<td>Use waveform comparison instead, clearly communicate limitation</td>
+</tr>
+<tr>
+<td>Polysynthetic grammar doesn’t fit Duolingo model</td>
+<td>High — wrong pedagogy wastes effort</td>
+<td>Adapt exercise types (word building, morpheme tiles), consult
+linguists</td>
+</tr>
+<tr>
+<td>Community buy-in</td>
+<td>Critical — app without community is empty</td>
+<td>Establish partnerships before development, involve community in
+design</td>
+</tr>
+<tr>
+<td>Content volume</td>
+<td>High — need thousands of exercises</td>
+<td>Start with 2 courses (20 units), expand iteratively</td>
+</tr>
+<tr>
+<td>Offline audio storage</td>
+<td>Medium — large download sizes</td>
+<td>Progressive download, audio compression, user-controlled
+caching</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="mvp-scope">13. MVP Scope</h2>
+<h3 id="in-scope-v1.0">In Scope (v1.0)</h3>
+<ul>
+<li>Course 1: Foundations (10 units, ~100 lessons, ~1,000-1,500
+exercises)</li>
+<li>All exercise types except Word Building and Verb Class ID</li>
+<li>Audio for all vocabulary and sentences</li>
+<li>XP, streaks, hearts, daily goals</li>
+<li>Offline lesson content (text), on-demand audio caching</li>
+<li>Dictionary with search, audio, animacy tags</li>
+<li>User accounts with cloud progress sync</li>
+<li>Francis-Smith orthography (primary)</li>
+<li>iOS and Android via Expo</li>
+</ul>
+<h3 id="out-of-scope-future">Out of Scope (Future)</h3>
+<ul>
+<li>Listuguj orthography toggle</li>
+<li>Leaderboards and social features</li>
+<li>Course 2 and beyond</li>
+<li>Word Building and Verb Class ID exercises</li>
+<li>Story mode with traditional stories</li>
+<li>Community contribution portal</li>
+<li>Web version</li>
+<li>Kids mode (under 10)</li>
+<li>Push notification reminders</li>
+<li>Premium/subscription features</li>
+<li>Custom pronunciation model</li>
+</ul>
+<hr />
+<h2 id="success-metrics">14. Success Metrics</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target (6 months post-launch)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Downloads</td>
+<td>5,000+</td>
+</tr>
+<tr>
+<td>DAU (Daily Active Users)</td>
+<td>500+</td>
+</tr>
+<tr>
+<td>7-day retention</td>
+<td>40%+</td>
+</tr>
+<tr>
+<td>30-day retention</td>
+<td>20%+</td>
+</tr>
+<tr>
+<td>Lessons completed per user per week</td>
+<td>5+</td>
+</tr>
+<tr>
+<td>Average streak length</td>
+<td>7+ days</td>
+</tr>
+<tr>
+<td>Words learned per active user</td>
+<td>200+</td>
+</tr>
+<tr>
+<td>Community satisfaction (survey)</td>
+<td>4.0+ / 5.0</td>
+</tr>
+<tr>
+<td>App store rating</td>
+<td>4.5+</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="open-questions-for-review">15. Open Questions (For Review)</h2>
+<ol type="1">
+<li><strong>App name:</strong> Is “Newolingo” culturally appropriate?
+Should the name be in Mi’kmaw?</li>
+<li><strong>In-app currency name:</strong> “Wampum” may be culturally
+sensitive — needs community input.</li>
+<li><strong>Monetization:</strong> Fully free is ideal but requires
+sustainable funding. Grant strategy needed.</li>
+<li><strong>Audio licensing:</strong> Can we partner with
+mikmaqonline.org for existing recordings?</li>
+<li><strong>Orthography default:</strong> Should Listuguj users see
+their orthography by default based on location?</li>
+<li><strong>Community advisory board:</strong> Who should be invited?
+What governance structure?</li>
+<li><strong>Open source:</strong> Should the app code be open source?
+What about content?</li>
+<li><strong>Age gating:</strong> Should there be a kids mode from the
+start or is 10+ sufficient for MVP?</li>
+</ol>
+<hr />
+<h2 id="appendix-a-mikmaw-orthography-quick-reference">Appendix A:
+Mi’kmaw Orthography Quick Reference</h2>
+<h3 id="francis-smith-system">Francis-Smith System</h3>
+<p><strong>Vowels:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Short</th>
+<th>Long</th>
+<th>IPA (approx)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>a’ (á)</td>
+<td>/a/ → /aː/</td>
+</tr>
+<tr>
+<td>e</td>
+<td>e’ (é)</td>
+<td>/e/ → /eː/</td>
+</tr>
+<tr>
+<td>i</td>
+<td>i’ (í)</td>
+<td>/i/ → /iː/</td>
+</tr>
+<tr>
+<td>o</td>
+<td>o’ (ó)</td>
+<td>/o/ → /oː/</td>
+</tr>
+<tr>
+<td>u</td>
+<td>u’ (ú)</td>
+<td>/u/ → /uː/</td>
+</tr>
+<tr>
+<td>ɨ</td>
+<td>—</td>
+<td>/ə/ (schwa)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Consonants:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Letter</th>
+<th>IPA</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>j</td>
+<td>/tʃ/ ~ /dʒ/</td>
+<td>Voiced between sonorants</td>
+</tr>
+<tr>
+<td>k</td>
+<td>/k/ ~ /g/</td>
+<td>Voiced between sonorants</td>
+</tr>
+<tr>
+<td>l</td>
+<td>/l/</td>
+<td></td>
+</tr>
+<tr>
+<td>m</td>
+<td>/m/</td>
+<td></td>
+</tr>
+<tr>
+<td>n</td>
+<td>/n/</td>
+<td></td>
+</tr>
+<tr>
+<td>p</td>
+<td>/p/ ~ /b/</td>
+<td>Voiced between sonorants</td>
+</tr>
+<tr>
+<td>q</td>
+<td>/q/ ~ /ɢ/</td>
+<td>Uvular, voiced between sonorants</td>
+</tr>
+<tr>
+<td>s</td>
+<td>/s/ ~ /z/</td>
+<td>Voiced between sonorants</td>
+</tr>
+<tr>
+<td>t</td>
+<td>/t/ ~ /d/</td>
+<td>Voiced between sonorants</td>
+</tr>
+<tr>
+<td>w</td>
+<td>/w/</td>
+<td></td>
+</tr>
+<tr>
+<td>kw</td>
+<td>/kw/</td>
+<td>Labialized velar</td>
+</tr>
+<tr>
+<td>qw</td>
+<td>/qw/</td>
+<td>Labialized uvular</td>
+</tr>
+<tr>
+<td>tl</td>
+<td>/tl/</td>
+<td>Lateral affricate</td>
+</tr>
+</tbody>
+</table>
+<h3 id="listuguj-differences">Listuguj Differences</h3>
+<table>
+<thead>
+<tr>
+<th>Francis-Smith</th>
+<th>Listuguj</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>k</td>
+<td>g</td>
+<td>Mi’kmaw → Mi’gmaq</td>
+</tr>
+<tr>
+<td>ɨ (barred-i)</td>
+<td>’ (apostrophe)</td>
+<td></td>
+</tr>
+<tr>
+<td>a’ (long vowel)</td>
+<td>aa (doubled)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="appendix-b-reference-resources">Appendix B: Reference
+Resources</h2>
+<ul>
+<li>Mi’gmaq Online Talking Dictionary: mikmaqonline.org</li>
+<li>Learn Mi’gmaq Online: learn.migmaq.org</li>
+<li>Jilaptoq Mi’kmaw Language Center: jilaptoq.ca</li>
+<li>FirstVoices Mi’kmaw: firstvoices.com</li>
+<li>Mi’kmaw Kina’matnewey: kfrancis.ca / mikmawey.ca</li>
+<li>The Conjugator (SayItFirst): sayitfirst.ca</li>
+<li>Mi’kmaw Language Act (Nova Scotia, 2022)</li>
+<li>Mi’kmaw Language ReVITALization Strategy (March 2025)</li>
+</ul>
+</body>
+</html>

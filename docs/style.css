@@ -1,0 +1,145 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1a1a2e;
+  --accent: #2d6a4f;
+  --accent-light: #40916c;
+  --border: #dee2e6;
+  --code-bg: #f4f4f5;
+  --blockquote-border: #40916c;
+  --table-stripe: #f8f9fa;
+  --link: #2d6a4f;
+  --max-width: 52rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a2e;
+    --fg: #e0e0e0;
+    --accent: #52b788;
+    --accent-light: #74c69d;
+    --border: #3a3a5c;
+    --code-bg: #252540;
+    --blockquote-border: #52b788;
+    --table-stripe: #22223a;
+    --link: #74c69d;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 17px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+  color: var(--fg);
+  background: var(--bg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--fg);
+}
+
+h1 { font-size: 2rem; border-bottom: 3px solid var(--accent); padding-bottom: 0.4rem; }
+h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.1rem; }
+
+p { margin-bottom: 1rem; }
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+a:hover { border-bottom-color: var(--link); }
+
+hr {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 2rem 0;
+}
+
+blockquote {
+  border-left: 4px solid var(--blockquote-border);
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+  color: var(--fg);
+  opacity: 0.9;
+  background: var(--code-bg);
+  border-radius: 0 6px 6px 0;
+}
+
+code {
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background: var(--code-bg);
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+  line-height: 1.5;
+}
+pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.85em;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95em;
+}
+th, td {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+th {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+tr:nth-child(even) { background: var(--table-stripe); }
+
+ul, ol {
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+li { margin-bottom: 0.3rem; }
+
+strong { font-weight: 700; }
+em { font-style: italic; }
+del { opacity: 0.6; }
+
+/* dialogue styling for the X-Files doc */
+p > strong:first-child {
+  color: var(--accent);
+}
+
+header.title-block-header {
+  display: none;
+}
