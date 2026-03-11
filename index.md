@@ -1,10 +1,12 @@
-# Newolingo
+# Wapn
 
 ### A Mi'kmaw Language Learning App
 
+*"First light" in Mi'kmaw — the dawn of a new learning journey.*
+
 ---
 
-**Newolingo** is a mobile-first, gamified language learning app for Mi'kmaw (Mi'kmaq), modeled on Duolingo's proven learning mechanics. The app targets learners at all levels and serves the urgent need for Mi'kmaw language revitalization.
+**Wapn** is a mobile-first, gamified language learning app for Mi'kmaw (Mi'kmaq), modeled on Duolingo's proven learning mechanics. The app targets learners at all levels and serves the urgent need for Mi'kmaw language revitalization.
 
 **Why this matters:** UNESCO classifies Mi'kmaw as "vulnerable." The percentage of children aged 0-4 learning Mi'kmaw dropped from 44% (1999) to 20% (2013). Without intervention, intergenerational transmission will collapse.
 
@@ -12,8 +14,8 @@
 
 ## Documents
 
-- [Executive Summary (X-Files Edition)](docs/plans/2026-03-11-newolingo-executive-summary-xfiles.html) — The truth is out there.
-- [Full Design Document](docs/plans/2026-03-08-newolingo-design.html) — Complete technical design, architecture, and curriculum plan.
+- [Executive Summary (X-Files Edition)](docs/plans/2026-03-11-wapn-executive-summary-xfiles.html) — The truth is out there.
+- [Full Design Document](docs/plans/2026-03-08-wapn-design.html) — Complete technical design, architecture, and curriculum plan.
 
 ---
 

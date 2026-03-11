@@ -1,4 +1,4 @@
-# Newolingo: Mi'kmaw Language Learning App — Design Document
+# Wapn: Mi'kmaw Language Learning App — Design Document
 
 **Date:** 2026-03-08
 **Status:** Draft — Awaiting Review
@@ -7,11 +7,11 @@
 
 ## 1. Vision & Purpose
 
-Newolingo is a mobile-first, gamified language learning app for Mi'kmaw (Mi'kmaq), modeled on Duolingo's proven learning mechanics. The app targets learners at all levels — from complete beginners to intermediate speakers seeking fluency — and serves the urgent need for Mi'kmaw language revitalization.
+Wapn ("first light" in Mi'kmaw) is a mobile-first, gamified language learning app for Mi'kmaw (Mi'kmaq), modeled on Duolingo's proven learning mechanics. The app targets learners at all levels — from complete beginners to intermediate speakers seeking fluency — and serves the urgent need for Mi'kmaw language revitalization.
 
 **Why this matters:** UNESCO classifies Mi'kmaw as "vulnerable." The percentage of children aged 0-4 learning Mi'kmaw dropped from 44% (1999) to 20% (2013). Without intervention, intergenerational transmission will collapse. Digital tools that make learning accessible, fun, and self-paced are a critical supplement to community immersion programs.
 
-**Name:** "Newolingo" — a portmanteau referencing the Mi'kmaw language in a playful, recognizable format.
+**Name:** "Wapn" — Mi'kmaw for "first light / daylight." A metaphor for the dawn of a new learning journey. Short, memorable, culturally rooted. Subject to community validation.
 
 ---
 
@@ -547,7 +547,7 @@ Before building, the following partnerships should be established:
 
 ## 15. Open Questions (For Review)
 
-1. **App name:** Is "Newolingo" culturally appropriate? Should the name be in Mi'kmaw?
+1. **App name:** Working name is "Wapn" (Mi'kmaw for "first light / daylight"). Needs community validation.
 2. **In-app currency name:** "Wampum" may be culturally sensitive — needs community input.
 3. **Monetization:** Fully free is ideal but requires sustainable funding. Grant strategy needed.
 4. **Audio licensing:** Can we partner with mikmaqonline.org for existing recordings?
