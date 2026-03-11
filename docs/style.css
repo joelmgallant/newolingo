@@ -140,6 +140,6 @@ p > strong:first-child {
   color: var(--accent);
 }
 
-header.title-block-header {
+#title-block-header {
   display: none;
 }
