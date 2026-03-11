@@ -1,8 +1,3 @@
----
-layout: default
-title: "Newolingo — Design Document"
----
-
 # Newolingo: Mi'kmaw Language Learning App — Design Document
 
 **Date:** 2026-03-08

@@ -1,8 +1,3 @@
----
-layout: default
-title: Newolingo
----
-
 # Newolingo
 
 ### A Mi'kmaw Language Learning App

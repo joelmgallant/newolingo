@@ -1,8 +1,3 @@
----
-layout: default
-title: "NEWOLINGO — Executive Summary"
----
-
 # NEWOLINGO — Executive Summary
 
 ### A Mi'kmaw Language Learning App
