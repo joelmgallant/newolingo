@@ -19,19 +19,23 @@ Wapn ("first light" in Mi'kmaw) is a Duolingo-style language learning app for Mi
 ├── index.md                             # Landing page source (markdown)
 ├── docs/
 │   ├── style.css                        # Shared stylesheet (light + dark mode)
+│   ├── mockups/                         # AI-generated high-fidelity UI mockups (PNG)
 │   └── plans/
 │       ├── 2026-03-08-wapn-design.md              # Full design document
-│       └── 2026-03-11-wapn-executive-summary-xfiles.md   # Executive summary
+│       ├── 2026-03-11-wapn-executive-summary-xfiles.md   # Executive summary
+│       └── 2026-03-11-wapn-ui-mockups.md          # UI mockups (images + mermaid wireframes)
 ```
 
 ## Local Development
 
 ```bash
 bundle install          # First time only
-bundle exec jekyll serve
+bundle exec jekyll serve --no-watch
 ```
 
-Site is served at `http://localhost:4000` with auto-regeneration on file changes.
+Site is served at `http://localhost:4000`.
+
+**IMPORTANT:** Always use `--no-watch` when serving locally. Jekyll's auto-regeneration corrupts binary files (images in `docs/mockups/`) by rewriting them mid-copy, producing truncated/white images. After editing markdown, stop the server, run `bundle exec jekyll build`, then restart.
 
 ## Publishing
 

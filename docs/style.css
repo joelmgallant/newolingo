@@ -143,3 +143,12 @@ p > strong:first-child {
 #title-block-header {
   display: none;
 }
+
+/* phone mockup images — constrain to phone-like size, centered */
+img[src*="mockups/"] {
+  max-width: 280px;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}

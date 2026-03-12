@@ -97,6 +97,7 @@ title: Wapn
 
 - [Executive Summary (X-Files Edition)](docs/plans/2026-03-11-wapn-executive-summary-xfiles.html) — The truth is out there.
 - [Full Design Document](docs/plans/2026-03-08-wapn-design.html) — Complete technical design, architecture, and curriculum plan.
+- [UI Mockups](docs/plans/2026-03-11-wapn-ui-mockups.html) — Wireframe-level screen and exercise type mockups.
 
 ---
 
