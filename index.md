@@ -93,6 +93,19 @@ title: Wapn
 
 ---
 
+## App Preview
+
+<div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin: 2rem 0; padding: 1rem 0;">
+  <img src="docs/mockups/01-welcome.png" alt="Welcome Screen" style="max-width: 160px; width: 40%; min-width: 120px; margin: 0; border-radius: 12px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);">
+  <img src="docs/mockups/02-skill-tree.png" alt="Skill Tree" style="max-width: 160px; width: 40%; min-width: 120px; margin: 0; border-radius: 12px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);">
+  <img src="docs/mockups/06-listening.png" alt="Listening Exercise" style="max-width: 160px; width: 40%; min-width: 120px; margin: 0; border-radius: 12px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);">
+  <img src="docs/mockups/04-dictionary.png" alt="Dictionary" style="max-width: 160px; width: 40%; min-width: 120px; margin: 0; border-radius: 12px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);">
+</div>
+
+*See all screens in the [UI Mockups](docs/plans/2026-03-11-wapn-ui-mockups.html).*
+
+---
+
 ## Documents
 
 - [Executive Summary (X-Files Edition)](docs/plans/2026-03-11-wapn-executive-summary-xfiles.html) — The truth is out there.
