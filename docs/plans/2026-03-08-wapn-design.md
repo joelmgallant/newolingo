@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Wapn \u2014 Design Document"
+---
+
 # Wapn: Mi'kmaw Language Learning App — Design Document
 
 **Date:** 2026-03-08

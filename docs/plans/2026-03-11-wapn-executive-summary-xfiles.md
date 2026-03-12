@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Wapn \u2014 Executive Summary"
+---
+
 # WAPN — Executive Summary
 
 ### A Mi'kmaw Language Learning App

@@ -1,3 +1,8 @@
+---
+layout: default
+title: Wapn
+---
+
 # Wapn
 
 ### A Mi'kmaw Language Learning App
