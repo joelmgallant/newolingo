@@ -1,4 +1,5 @@
-import { StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -18,27 +19,29 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.content}>
-        <View style={[styles.unitNode, { backgroundColor: colors.brand }]}>
+        <Pressable
+          style={[styles.unitNode, { backgroundColor: colors.brand }]}
+          onPress={() => router.push('/lesson')}>
           <ThemedText style={styles.unitEmoji}>1</ThemedText>
           <ThemedText style={styles.unitLabel}>Greetings</ThemedText>
-        </View>
+        </Pressable>
 
         <View style={[styles.connector, { backgroundColor: colors.border }]} />
 
-        <View style={[styles.unitNode, { backgroundColor: colors.border }]}>
+        <View style={[styles.unitNode, { backgroundColor: colors.border, opacity: 0.5 }]}>
           <ThemedText style={styles.unitEmoji}>2</ThemedText>
           <ThemedText style={[styles.unitLabel, { color: colors.icon }]}>Family</ThemedText>
         </View>
 
         <View style={[styles.connector, { backgroundColor: colors.border }]} />
 
-        <View style={[styles.unitNode, { backgroundColor: colors.border }]}>
+        <View style={[styles.unitNode, { backgroundColor: colors.border, opacity: 0.5 }]}>
           <ThemedText style={styles.unitEmoji}>3</ThemedText>
           <ThemedText style={[styles.unitLabel, { color: colors.icon }]}>Numbers</ThemedText>
         </View>
       </View>
 
-      <ThemedText style={styles.placeholder}>Skill tree coming soon</ThemedText>
+      <ThemedText style={styles.placeholder}>Tap Greetings to start a lesson</ThemedText>
     </ThemedView>
   );
 }
